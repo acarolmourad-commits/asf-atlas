@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ASF Atlas — Picos do Litoral Norte de SP | ASF</title>
-<meta name="description" content="Mapa interativo dos picos de surf do litoral norte de SP">
-<link rel="canonical" href="https://acarolmourad-commits.github.io/asf-mapa/">
+<title>ASF Atlas — Guia Completo dos Picos de Surf do Litoral Norte de SP | ASF</title>
+<meta name="description" content="Atlas do surf: fichas detalhadas de 14 picos do litoral norte de SP — nível, melhor swell, vento ideal e acesso. Ubatuba, São Sebastião e Caraguatatuba.">
+<link rel="canonical" href="https://acarolmourad-commits.github.io/asf-atlas/">
 <style>
 :root{--rosa:#ff4d8d;--roxo:#7b2ff7;--areia:#fff5ec;--mar:#00c2cb}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif}
@@ -18,16 +18,27 @@ main{max-width:760px;margin:1.5rem auto;padding:0 1rem}
 .card{background:#fff;border-radius:16px;padding:1.4rem;box-shadow:0 4px 16px #7b2ff720;margin-bottom:1.2rem}
 .card h2{color:var(--roxo);margin-bottom:.6rem;font-size:1.2rem}
 button{background:linear-gradient(90deg,var(--rosa),var(--roxo));color:#fff;border:none;padding:.6rem 1.2rem;border-radius:24px;font-size:1rem;cursor:pointer;margin:.2rem 0}
-input,select,textarea{padding:.5rem;border:1px solid #ddd;border-radius:10px;width:100%;margin:.3rem 0;font-size:1rem}
 .xp{position:fixed;bottom:1rem;right:1rem;background:#fff;border:2px solid var(--rosa);border-radius:24px;padding:.4rem 1rem;font-weight:bold;color:var(--roxo);box-shadow:0 4px 12px #0002}
 footer{text-align:center;padding:2rem;font-size:.8rem;color:#888}
+.chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.6rem}
+.chips span{background:var(--areia);border:1px solid #ffd3e6;color:#c2185b;font-size:.7rem;font-weight:600;padding:.2rem .55rem;border-radius:999px}
+.filtros{display:flex;flex-wrap:wrap;gap:.3rem;margin:.5rem 0 .8rem}
+.filtros button{font-size:.78rem;padding:.35rem .8rem}
+details{background:#fff;border-radius:14px;padding:14px 18px;margin:10px 0;box-shadow:0 2px 10px rgba(14,36,57,.06)}
+summary{font-weight:700;cursor:pointer;font-size:14.5px}
+details p{font-size:14px;margin-top:8px;color:#5A6B7A}
+a{color:var(--roxo)}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"ASF Atlas","url":"https://acarolmourad-commits.github.io/asf-atlas/","applicationCategory":"SportsApplication","operatingSystem":"Web","inLanguage":"pt-BR","isPartOf":{"@type":"WebSite","name":"ASF — Associação Surf Feminino","url":"https://acarolmourad-commits.github.io/asf-app/"}}
 </script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Qual a diferença entre o ASF Atlas e o ASF Mapa?","acceptedAnswer":{"@type":"Answer","text":"O ASF Mapa é o mapa interativo (OpenStreetMap) com a localização dos picos; o ASF Atlas é o guia em fichas, com nível, swell, vento e perfil de cada pico."}},{"@type":"Question","name":"Quantos picos o ASF Atlas cobre?","acceptedAnswer":{"@type":"Answer","text":"14 picos do litoral norte de SP: 5 em Ubatuba, 7 em São Sebastião e 2 em Caraguatatuba."}},{"@type":"Question","name":"Quais picos são melhores para iniciantes?","acceptedAnswer":{"@type":"Answer","text":"Toninhas (Ubatuba), Toque-Toque Grande (São Sebastião) e Martim de Sá (Caraguatatuba) são os mais indicados para quem está começando."}}]}
+</script>
 <meta property="og:type" content="website">
-<meta property="og:title" content="ASF Atlas — ASF">
-<meta property="og:description" content="Mapa interativo dos picos de surf do litoral norte de SP">
+<meta property="og:site_name" content="ASF — Associação de Surf Feminino">
+<meta property="og:title" content="ASF Atlas — Guia Completo dos Picos do Litoral Norte de SP">
+<meta property="og:description" content="Fichas detalhadas de 14 picos de surf: nível, melhor swell, vento ideal e acesso.">
 <meta property="og:url" content="https://acarolmourad-commits.github.io/asf-atlas/">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:image" content="https://acarolmourad-commits.github.io/thumbnails/asf-atlas.jpg">
@@ -37,12 +48,26 @@ footer{text-align:center;padding:2rem;font-size:.8rem;color:#888}
 <meta name="twitter:image" content="https://acarolmourad-commits.github.io/thumbnails/asf-atlas.jpg">
 </head>
 <body>
-<header><h1>🗺️ ASF Atlas</h1><p>Mapa interativo dos picos de surf do litoral norte de SP</p></header>
+<header><h1>🗺️ ASF Atlas</h1><p>Guia completo dos 14 picos de surf do litoral norte de SP — fichas detalhadas por praia</p></header>
 
 <main>
-<div class="card"><h2>🗺️ Picos do Litoral Norte</h2><p>Toque num pico para ver detalhes:</p><div id="picos"></div></div>
-<div class="card" id="det" style="display:none"><h2 id="pnome"></h2><p id="pinfo"></p><p id="plinks"></p></div>
+<div class="card"><h2>🔎 Explorar por nível</h2>
+<div class="filtros">
+<button onclick="filtrar('todos')">Todos (14)</button>
+<button onclick="filtrar('Iniciante')">🌱 Iniciante</button>
+<button onclick="filtrar('Intermediário')">⚡ Intermediário</button>
+<button onclick="filtrar('Avançado')">🔥 Avançado</button>
+</div>
+<div id="picos"></div></div>
+<div class="card" id="det" style="display:none"><h2 id="pnome"></h2><p id="pinfo" style="font-size:.93rem;line-height:1.55"></p><div class="chips" id="pchips"></div><p id="plinks" style="margin-top:.8rem;font-size:.85rem"></p></div>
+<div class="card"><h2>🧭 Atlas × Mapa</h2><p>Este é o <strong>Atlas</strong>: fichas com detalhes de cada pico. Para ver a localização no mapa interativo (OpenStreetMap), use o <a href="https://acarolmourad-commits.github.io/asf-mapa/">ASF Mapa</a>. Combine com a <a href="https://acarolmourad-commits.github.io/asf-previsao/">Previsão</a> e o <a href="https://acarolmourad-commits.github.io/asf-vento/">Vento ao vivo</a>.</p></div>
 <div class="card"><h2>🌐 Ecossistema ASF</h2><p>Ganhe XP aqui e veja seu progresso no <a href="https://acarolmourad-commits.github.io/asf-ranking/">ASF Ranking</a>. Explore tudo no <a href="https://acarolmourad-commits.github.io/">Hub ASF</a>.</p></div>
+<section>
+<h2 style="font-size:19px;margin:22px 0 4px">Perguntas frequentes</h2>
+<details><summary>Qual a diferença entre o ASF Atlas e o ASF Mapa?</summary><p>O ASF Mapa é o mapa interativo (OpenStreetMap) com a localização dos picos; o ASF Atlas é o guia em fichas, com nível, swell, vento e perfil de cada pico.</p></details>
+<details><summary>Quantos picos o ASF Atlas cobre?</summary><p>14 picos do litoral norte de SP: 5 em Ubatuba, 7 em São Sebastião e 2 em Caraguatatuba.</p></details>
+<details><summary>Quais picos são melhores para iniciantes?</summary><p>Toninhas (Ubatuba), Toque-Toque Grande (São Sebastião) e Martim de Sá (Caraguatatuba) são os mais indicados para quem está começando.</p></details>
+</section>
 </main>
 <div class="xp">⭐ XP: <span id="xp">0</span></div>
 <footer>ASF — Associação de Surf Feminino · <a href="https://acarolmourad-commits.github.io/asf-app/">asf-app</a></footer>
@@ -50,7 +75,27 @@ footer{text-align:center;padding:2rem;font-size:.8rem;color:#888}
 const XP=()=>parseInt(localStorage.getItem('asf_xp')||'0');
 function addXP(n){localStorage.setItem('asf_xp',XP()+n);document.getElementById('xp').textContent=XP();}
 document.getElementById('xp').textContent=XP();
-const P=[{n:'Praia Grande',d:'O point da ASF! Ondas consistentes, ideal pra todos os níveis. Fundo de areia.',nivel:'Todos'},{n:'Maresias',d:'Tubos e direitas potentes. Palco de campeonatos.',nivel:'Avançada'},{n:'Camburi',d:'Esquerdas clássicas, visual lindo.',nivel:'Intermediária'},{n:'Juquehy',d:'Ondas amigáveis e praia linda pra família.',nivel:'Iniciante'},{n:'Barra do Una',d:'Boca de rio, ondas formação após chuvas.',nivel:'Intermediária'},{n:'Ubatuba (Itamambuca)',d:'O mais consistente da região. Direitas e esquerdas.',nivel:'Todos'}];document.getElementById('picos').innerHTML=P.map((p,i)=>`<button style="display:block;width:100%;text-align:left;background:#fff;color:var(--roxo);border:2px solid var(--roxo)" onclick="ver(${i})">📍 ${p.n} <span style="float:right;font-size:.75rem">${p.nivel}</span></button>`).join('');window.ver=i=>{const p=P[i];document.getElementById('det').style.display='block';document.getElementById('pnome').textContent='📍 '+p.n;document.getElementById('pinfo').textContent=p.d;document.getElementById('plinks').innerHTML='Veja a <a href="https://acarolmourad-commits.github.io/asf-previsao/">previsão</a> e o <a href="https://acarolmourad-commits.github.io/asf-praias/">guia completo de praias</a>.';addXP(5);};
+const P=[
+{n:'Praia Grande (Ubatuba)',nivel:'Todos',swell:'S/SE',vento:'W/NW',d:'Beach break extenso de fundo de areia, com picos espalhados por toda a praia. Ondas para todos os níveis; ~240 km de SP via Tamoios + Rio-Santos.'},
+{n:'Toninhas (Ubatuba)',nivel:'Iniciante',swell:'S/SE grande',vento:'W/NW',d:'Enseada abrigada com ondas mansas — a preferida das escolinhas e do longboard. Quiosques e estacionamento na orla.'},
+{n:'Itamambuca (Ubatuba)',nivel:'Intermediário',swell:'SE',vento:'NW',d:'Um dos picos mais consistentes de SP, já recebeu etapas do circuito qualificatório da WSL. Direitas e esquerdas em bancos de areia.'},
+{n:'Praia do Félix (Ubatuba)',nivel:'Intermediário',swell:'S/SE',vento:'NW',d:'Esquerdas clássicas no canto esquerdo, cercada de mata atlântica. Combina surf e visual.'},
+{n:'Vermelha do Norte (Ubatuba)',nivel:'Avançado',swell:'S',vento:'NW',d:'Beach break exposto e potente. Com swell grande de sul, exige experiência com correntes.'},
+{n:'Maresias (São Sebastião)',nivel:'Intermediário',swell:'S/SE',vento:'NW',d:'Beach break potente e consistente, palco tradicional de etapas do circuito brasileiro e WQS. Região que revelou Filipe Toledo. ~170 km de SP.'},
+{n:'Camburi (São Sebastião)',nivel:'Intermediário',swell:'S/SE',vento:'N/NW',d:'Praia de tombo com direitas clássicas e tubulares perto da areia; fundo de areia. Boate e gastronomia famosas no vilarejo.'},
+{n:'Juquehy (São Sebastião)',nivel:'Todos',swell:'S/SE',vento:'NW',d:'Beach break longo e consistente, com escolinhas tradicionais — referência para aulas no litoral norte.'},
+{n:'Barra do Una (São Sebastião)',nivel:'Iniciante',swell:'S/SE',vento:'NW',d:'Restinga na foz do Rio Una, junto ao Parque Estadual da Serra do Mar. Ondas menores em ambiente preservado.'},
+{n:'Baleia (São Sebastião)',nivel:'Todos',swell:'S/SE',vento:'NW',d:'Beach break entre Camburi e Boissucanga, com bancos de areia variados — o nível depende do dia.'},
+{n:'Boissucanga (São Sebastião)',nivel:'Iniciante',swell:'S/SE',vento:'NW',d:'Praia extensa com picos espalhados, menos lotada que as vizinhas Maresias e Camburi.'},
+{n:'Toque-Toque Grande (São Sebastião)',nivel:'Iniciante',swell:'SE',vento:'NW',d:'Enseada abrigada ao sul de Maresias, boa para iniciantes e longboard. O morro do Toque-Toque é ponto clássico de observação do swell.'},
+{n:'Praia Brava (Caraguatatuba)',nivel:'Avançado',swell:'S/SE',vento:'NW',d:'Praia oceânica exposta, com ondas fortes e correntes. Acesso por trilha curta saindo de Martim de Sá. Para experientes.'},
+{n:'Martim de Sá (Caraguatatuba)',nivel:'Todos',swell:'S',vento:'W',d:'Enseada com esquerda tradicional no canto norte quando entra swell maior; na baía, ondas pequenas ideais para iniciantes. ~190 km de SP.'}
+];
+function cor(n){return n==='Iniciante'?'#0B8A5F':n==='Intermediário'?'#9A6B00':n==='Avançado'?'#B42318':'#7b2ff7'}
+function render(list){document.getElementById('picos').innerHTML=list.map(i=>{const p=P[i];return `<button style="display:block;width:100%;text-align:left;background:#fff;color:var(--roxo);border:2px solid var(--roxo)" onclick="ver(${i})">📍 ${p.n} <span style="float:right;font-size:.75rem;color:${cor(p.nivel)}">${p.nivel}</span></button>`}).join('')}
+window.filtrar=n=>{render(n==='todos'?P.map((_,i)=>i):P.map((p,i)=>p.nivel===n||p.nivel==='Todos'?i:-1).filter(i=>i>=0))};
+window.ver=i=>{const p=P[i];document.getElementById('det').style.display='block';document.getElementById('pnome').textContent='📍 '+p.n;document.getElementById('pinfo').textContent=p.d;document.getElementById('pchips').innerHTML=`<span>🏄 ${p.nivel}</span><span>🌊 Swell: ${p.swell}</span><span>💨 Vento ideal: ${p.vento}</span>`;document.getElementById('plinks').innerHTML='Ver no <a href="https://acarolmourad-commits.github.io/asf-mapa/">ASF Mapa</a> · <a href="https://acarolmourad-commits.github.io/asf-previsao/">Previsão</a> · <a href="https://acarolmourad-commits.github.io/asf-praias/">Guia de praias</a>';addXP(5);document.getElementById('det').scrollIntoView({behavior:'smooth'})};
+render(P.map((_,i)=>i));
 </script>
 
 <!-- ASF LGPD footer -->
