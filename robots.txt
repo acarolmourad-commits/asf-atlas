@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://acarolmourad-commits.github.io/asf-atlas/sitemap.xml
+Sitemap: https://atlas.asf.surf/sitemap.xml
